@@ -16,7 +16,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         //인증 논리를 추가할 위치
         String username = authentication.getName();
         String password = String.valueOf(authentication.getCredentials());
-        if ("dolong".equals(username) && "1234".equals(password))
+        if ("dolong".equals(username) && "1234".equals(password)/* 실제 사용할땐 passwordEncoder로 검증 */)
             return new UsernamePasswordAuthenticationToken(username, password, Arrays.asList());
         else
             throw new AuthenticationCredentialsNotFoundException("Error in authentication");
@@ -24,7 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        // Authentication 형식의 구현을 추가할 위치
-        return false;
+        return UsernamePasswordAuthenticationToken.class
+                .isAssignableFrom(authentication);
     }
 }
