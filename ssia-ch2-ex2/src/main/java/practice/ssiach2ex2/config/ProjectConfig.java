@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class ProjectConfig {
+    private final CustomAuthenticationProvider authenticationProvider;
+
     @Bean
     public UserDetailsService userDetailsService() {
         var userDetailsManager = new InMemoryUserDetailsManager();
@@ -34,7 +36,12 @@ public class ProjectConfig {
         http.authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().permitAll()
         );
+        http.authenticationProvider(authenticationProvider);
 
         return http.build();
+    }
+
+    public ProjectConfig(CustomAuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
     }
 }
